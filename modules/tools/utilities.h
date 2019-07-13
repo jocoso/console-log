@@ -4,4 +4,4 @@
 #define TRUE 1
 #define FALSE 0
 
-long power(long base, long exponent);
+long pow(long base, long exponent);

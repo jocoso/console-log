@@ -4,24 +4,21 @@
 #include "argshandler.h"
 #include "tools\utilities.h"
 
-struct Argument_Handler *new_arg_handler() {
-	struct Argument_Handler *arg_handler;
-	//arg_handler->arg_list = *new_list();
-
-	return arg_handler;
+void arghandler_init(ArgumentHandler *argument_handler) {
+	list_init(&(argument_handler->argument_list));
 }
 
 
-void arghandler_add(Argument_Handler *argument_handler, char* argument, char* helper) {
+void arghandler_add(ArgumentHandler *argument_handler, char* argument, char* helper) {
 	Arg arg;
 	arg_init(&arg);
 	arg.arg_name = argument;
 	arg.arg_help = helper;
-	list_append(&(argument_handler->arg_list), &arg);
+	list_append(&(argument_handler->argument_list), &arg);
 }
 
-void arghandler_free(Argument_Handler *argument_handler) {
-	list_free(&(argument_handler->arg_list));
+void arghandler_free(ArgumentHandler *argument_handler) {
+	list_free(&(argument_handler->argument_list));
 }
 
 void arg_init(Arg *arg) {
