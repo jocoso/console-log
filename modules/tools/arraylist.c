@@ -4,16 +4,21 @@
 #include <stdlib.h>
 #include "arraylist.h"
 
-void list_init(ArrayList *array_list) {
+Array_List *new_list() {
 	// Initialize size and capacity
-	array_list->size = 0;
-	array_list->capacity = LIST_INITIAL_CAPACITY;
+	struct Array_List *list;
+
+	list = malloc(sizeof(Array_List*));
+	list->size = 0;
+	list->capacity = LIST_INITIAL_CAPACITY;
 	
 	// allocate memory
-	array_list->data = malloc(sizeof(void*) * array_list->capacity);
+	list->data = malloc(sizeof(void*) * list->capacity);
+
+	return list;
 }
 
-void list_append(ArrayList * array_list, void* value) {
+void list_append(Array_List *array_list, void* value) {
 	// Making sure there's room to expand
 	list_double_capacity_if_full(array_list);
 	
@@ -21,7 +26,9 @@ void list_append(ArrayList * array_list, void* value) {
 	array_list->data[array_list->size++] = value;
 }
 
-int list_get_int(ArrayList *array_list, int index) {
+// -------Getters-START------- //
+
+int list_get_int(Array_List *array_list, int index) {
 	if(index >= array_list->size || index < 0) {
 		printf("Index %d out of bounds for list of size %d\n", index, array_list->size);
 		exit(1);
@@ -30,7 +37,7 @@ int list_get_int(ArrayList *array_list, int index) {
 	return *((int *) (array_list->data[index]));
 }
 
-double list_get_double(ArrayList *array_list, int index) {
+double list_get_double(Array_List *array_list, int index) {
 	if(index >= array_list->size || index < 0) {
 		printf("Index %d out of bounds for list of size %d\n", index, array_list->size);
 		exit(1);
@@ -38,15 +45,15 @@ double list_get_double(ArrayList *array_list, int index) {
 	
 	return *((double *)(array_list->data[index]));
 }
-char* list_get_string(ArrayList *array_list, int index) {
+char* list_get_string(Array_List *array_list, int index) {
 	if(index >= array_list->size || index < 0) {
 		printf("Index %d out of bounds for list of size %d\n", index, array_list->size);
 		exit(1);
 	}
 	
-	return *((char **)(array_list->data[index]));
+	return (char *) array_list->data[index];
 }
-char list_get_char(ArrayList *array_list, int index) {
+char list_get_char(Array_List *array_list, int index) {
 	if(index >= array_list->size || index < 0) {
 		printf("Index %d out of bounds for list of size %d\n", index, array_list->size);
 		exit(1);
@@ -55,7 +62,7 @@ char list_get_char(ArrayList *array_list, int index) {
 	return *((char *)(array_list->data[index]));
 }
 
-void *list_get_raw(ArrayList *array_list, int index) {
+void *list_get_raw(Array_List *array_list, int index) {
 	if(index >= array_list->size || index < 0) {
 		printf("Index %d out of bounds for list of size %d\n", index, array_list->size);
 		exit(1);
@@ -64,7 +71,13 @@ void *list_get_raw(ArrayList *array_list, int index) {
 	return array_list->data[index];
 }
 
-void list_set(ArrayList *array_list, int index, void *value) {
+// -------Getters-END------- //
+
+
+
+
+
+void list_set(Array_List *array_list, int index, void *value) {
 	// zero fill the list up to the desired index
 	while (index >= array_list->size) {
 		list_append(array_list, 0);
@@ -74,7 +87,7 @@ void list_set(ArrayList *array_list, int index, void *value) {
 	array_list->data[index] = value;
 }
 
-void list_double_capacity_if_full(ArrayList *array_list) {
+void list_double_capacity_if_full(Array_List *array_list) {
 	if(array_list->size >= array_list->capacity) {
 		// double capacity and resize the allocated memory accordingly
 		array_list->capacity *= 2;
@@ -82,8 +95,9 @@ void list_double_capacity_if_full(ArrayList *array_list) {
 	}
 }
 
-void list_free(ArrayList *array_list) {
+void list_free(Array_List *array_list) {
 	free(array_list->data);
+	free(array_list);
 }
 
 
