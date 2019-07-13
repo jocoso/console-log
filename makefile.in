@@ -1,0 +1,9 @@
+CC=gcc
+CFLAGS=-I.
+DEPS = main.c
+
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+	
+nsbela: main.o
+	$(CC) -o nsbela main.o
