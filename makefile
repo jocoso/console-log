@@ -3,11 +3,11 @@ CFLAGS = -c
 
 all: nsbela
 
-nsbela: main.o argshandler.o arraylist.o hashmap.o utilities.o hashmap.o
+nsbela: main.o argshandler.o hashmap.o utilities.o hashmap.o
 		$(CC) main.o hashmap.o argshandler.o arraylist.o -o nsbela 
 
 main.o: main.c 
-		$(CC) $(CFLAGS) main.c modules/argshandler.h modules/tools/arraylist.h
+		$(CC) $(CFLAGS) main.c modules/argshandler.h modules/tools/hashmap.h
 
 argshandler.o: modules/argshandler.c
 		$(CC) $(CFLAGS) modules/argshandler.c modules/tools/arraylist.h modules/tools/utilities.h

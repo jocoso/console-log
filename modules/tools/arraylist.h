@@ -1,19 +1,23 @@
 #define LIST_INITIAL_CAPACITY 100
 
-
-typedef struct Array_List {
+typedef struct {
 	int size;		// How many spaces used
 	int capacity;	// How many available
 	void **data;		// Array
-} Array_List;
+} ArrayList;
 
-Array_List *new_list();
-void list_append(Array_List * array_list, void *value);
-int list_get_int(Array_List *array_list, int index);
-double list_get_double(Array_List *array_list, int index);
-char *list_get_string(Array_List *array_list, int index);
-char   list_get_char(Array_List *array_list, int index);
-void  *list_get_raw(Array_List *array_list, int index);
-void list_set(Array_List *array_list, int index, void *value);
-void list_double_capacity_if_full(Array_List *array_list);
-void list_free(Array_List *array_list);
+void list_init(ArrayList *array_list);
+
+void list_append(ArrayList * array_list, void *value);
+
+int    list_get_int(ArrayList *array_list, int index);
+double list_get_double(ArrayList *array_list, int index);
+char*  list_get_string(ArrayList *array_list, int index);
+char   list_get_char(ArrayList *array_list, int index);
+void  *list_get_raw(ArrayList *array_list, int index);
+
+void list_set(ArrayList *array_list, int index, void *value);
+
+void list_double_capacity_if_full(ArrayList *array_list);
+
+void list_free(ArrayList *array_list);
