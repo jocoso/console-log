@@ -21,7 +21,6 @@ Array_List *new_list() {
 	return list;
 }
 
-
 void list_append(Array_List *array_list, void* value) {
 	// Making sure there's room to expand
 	list_double_capacity_if_full(array_list);
@@ -46,28 +45,100 @@ Boolean list_search(Array_List *array_list, void* value, int flag) {
 			 	}
 			}
 
-			return FALSE;
 			break;
 		case STRING:
-
 			for(int i = 0; i < array_list->size; i++) {
 				char* val = TRANSFORM_PTR(value, char*);
 				char* item = TRANSFORM_PTR(array_list->data[i], char*);
 
-				if(strcmp(item, val)) {
+				if(strcmp(item, val) == 0) {
 					return TRUE;
 				}
 			}
 
-			return FALSE;
+			break;
+		case CHAR:
+			for(int i = 0; i < array_list->size; i++) {
+				char* val = TRANSFORM(value, char);
+				char* item = TRANSFORM(array_list->data[i], char);
+
+				if(item == val) {
+					return TRUE;
+				}
+			}
+
+			break;
+		case BOOLEAN:
+			for(int i = 0; i < array_list->size; i++) {
+				char* val = TRANSFORM(value, char);
+				char* item = TRANSFORM_PTR(array_list->data[i], char);
+
+				if(val == item) {
+					return TRUE;
+				}
+			}
+
 			break;
 		default:
 			printf("ERROR: Invalid flag given");
-			return FALSE;
 	}
+	return FALSE;
 
 }
 
+int list_search_index(Array_List *array_list, void* value, int flag) {
+	// TODO: Look for something more efficient than linear search
+	switch(flag) {
+		case INT:
+
+			for(int i = 0; i < array_list->size; i++) {
+			 	int val = TRANSFORM(value, int);
+			 	int item = TRANSFORM(array_list->data[i], int);
+
+			 	if(item == val) {
+			 		return i;
+			 	}
+			}
+			break;
+		case STRING:
+			for(int i = 0; i < array_list->size; i++) {
+				char* val = TRANSFORM_PTR(value, char*);
+				char* item = TRANSFORM_PTR(array_list->data[i], char*);
+
+				if(strcmp(item, val) == 0) {
+					return i;
+				}
+			}
+
+			break;
+		case CHAR:
+			for(int i = 0; i < array_list->size; i++) {
+				char* val = TRANSFORM(value, char);
+				char* item = TRANSFORM(array_list->data[i], char);
+
+				if(item == val) {
+					return i;
+				}
+			}
+
+			break;
+		case BOOLEAN:
+			for(int i = 0; i < array_list->size; i++) {
+				char* val = TRANSFORM(value, char);
+				char* item = TRANSFORM_PTR(array_list->data[i], char);
+
+				if(val == item) {
+					return i;
+				}
+			}
+
+			break;
+		default:
+			printf("ERROR: Invalid flag given");
+	}
+
+	return NULL;
+}
 
 // -------SEARCH ENDS------- //
 
@@ -118,9 +189,6 @@ void *list_get_raw(Array_List *array_list, int index) {
 }
 
 // -------Getters-END------- //
-
-
-
 
 
 void list_set(Array_List *array_list, int index, void *value) {
