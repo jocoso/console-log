@@ -1,6 +1,6 @@
 #include "utilities.h"
 
-long pow(long base, long exponent) {	
+long power(long base, long exponent) {	
 	int result = 1;
 	for(;;) {
 		if(exponent & 1) {

@@ -1,0 +1,9 @@
+# Don't track content
+
+# Compiled Sources #
+####################
+*.exe
+*.dll
+*.o
+*.exe.stackdump
+*.gch
