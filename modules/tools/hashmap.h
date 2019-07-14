@@ -13,7 +13,7 @@
 // hash_table.h
 typedef struct {
 	char* key;
-	char* value;
+	void* value;
 }Hash_Node; // ht_item
 
 typedef struct {
@@ -23,9 +23,9 @@ typedef struct {
 } Hash_Table; // ht_hash_table
 
 Hash_Table* new_hash(); // ht_new
-void hash_insert(Hash_Table* hash, const char* key, const char* value); // ht_insert 
-char* hash_search(Hash_Table* hash, const char* key); // ht_search
-static Hash_Node* hash_new_item(const char* k, const char* v); // ht_new_item
+void hash_insert(Hash_Table* hash, const char* key, const void* value); // ht_insert 
+void* hash_search(Hash_Table* hash, const char* key); // ht_search
+static Hash_Node* hash_new_item(const char* k, const void* v); // ht_new_item
 static void hash_delete_node(Hash_Node *i); // ht_del_item
 void hash_delete(Hash_Table* hash, const char* key); //ht_delete
 static int hash(const char* s, const int a, const int m); // ht_hash

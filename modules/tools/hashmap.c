@@ -7,15 +7,14 @@
 static Hash_Node HASH_DELETED_NODE = {NULL, NULL};
 
 
-static Hash_Node* hash_new_node(const char* k, const char* v) {
+static Hash_Node* hash_new_node(const char* k, const void* v) {
 	Hash_Node* node = malloc(sizeof(Hash_Node));
 	node->key = strdup(k);
 	node->value = strdup(v);
 	return node;
 }
 
-// hash_insert(hash, "--argument", "rojo");
-void hash_insert(Hash_Table* hash, const char* key, const char* value) {
+void hash_insert(Hash_Table* hash, const char* key, const void* value) {
 	Hash_Node* item = hash_new_node(key, value);
 	int index = hash_code(item->key, hash->size, 0);
 	Hash_Node* cur_item = hash->items[index];
@@ -34,8 +33,8 @@ void hash_insert(Hash_Table* hash, const char* key, const char* value) {
 	hash->count++;
 }
 
-// hash_search(hash, "--argument");
-char* hash_search(Hash_Table* hash, const char* key) {
+
+void* hash_search(Hash_Table* hash, const char* key) {
 	int index = hash_code(key, hash->size, 0);
 	Hash_Node *item = hash->items[index];
 	int i = 1;
