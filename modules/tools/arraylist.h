@@ -12,6 +12,7 @@ processes of the program and not as features */
 #define CHAR 0x2
 #define DOUBLE 0x3
 #define FLOAT 0x4
+#define BOOLEAN 0x5
 
 //TODO: Place this on another library
 #define TRUE 1
@@ -55,7 +56,7 @@ Array_List *new_list();
 
 	Arguments:
 			Array_List* list 	   : list affected
-			void* 		value      : the value in the function 
+			void* 		value      : the value to search
 			int 		flag	   : flag of datatype 
 	Returns:
 			int                    : TRUE (1), FALSE(0)
@@ -65,6 +66,28 @@ Array_List *new_list();
 			Boolean b = list_search(list_name, 500, INT);  //  FALSE
 */
 Boolean list_search(Array_List *array_list, void* value, int flag);
+
+
+
+/* 	Search on the given array list a given value
+	and returns the index of said item. If the item
+	doesn't exists the function returns NULL.
+	
+	the arraylist should be filled with items of 
+	the same datatype to avoid type side effects.
+
+	Arguments:
+			Array_List* list 	   : list affected
+			void* 		value      : the value to search
+			int 		flag	   : flag of datatype 
+	Returns:
+			int                    : Index of the value
+	Example:
+			list_name->[20, 30, 50, 200]
+			int a = list_search_index(list_name, 20, INT);  // 0
+			Boolean b = list_search(list_name, 500, INT);  //  NULL
+*/
+int list_search_index(Array_List *array_list, void* value, int flag);
 
 
 
