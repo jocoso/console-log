@@ -21,7 +21,6 @@ Array_List *new_list() {
 	return list;
 }
 
-
 void list_append(Array_List *array_list, void* value) {
 	// Making sure there's room to expand
 	list_double_capacity_if_full(array_list);
@@ -67,7 +66,6 @@ Boolean list_search(Array_List *array_list, void* value, int flag) {
 	}
 
 }
-
 
 // -------SEARCH ENDS------- //
 
@@ -118,9 +116,6 @@ void *list_get_raw(Array_List *array_list, int index) {
 }
 
 // -------Getters-END------- //
-
-
-
 
 
 void list_set(Array_List *array_list, int index, void *value) {
