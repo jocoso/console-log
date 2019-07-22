@@ -25,6 +25,8 @@ struct Hash_Node *new_hash_node(key, value)
 	return out;
 }
 
+// FUNCT: Add functionality that if the key already exists it won't make it again
+// Create a new function hash_contains that does it
 void hash_insert(table, key, value)
 	Hash_Table *table; 
 	char* key; 
@@ -35,8 +37,6 @@ void hash_insert(table, key, value)
 	if(is_empty(table)) return;
 	unsigned int index = hash_code(table->capacity, key);
 	struct Hash_Node *node = new_hash_node(key, value);
-
-	//printf("%d\n", (int*) node->value);
 
 	if(table->bucket[index] == NULL) {
 		table->bucket[index] = node;
@@ -60,22 +60,35 @@ void *hash_get(table, key)
 	unsigned int index = hash_code(table->capacity, key);
 	// Comment this out
 	struct Hash_Node *select_list = table->bucket[index];
-	if(select_list != NULL) {
-		if(select_list->next == NULL) {
-			return select_list->value;
-		} else {
-			while(select_list != NULL) {
-				if(strcmp(select_list->key, key)) {
-					return select_list->value;
-				}
-				select_list = select_list->next;
-			}
-		}
 
+	
+	if(!is_empty(select_list)) {
+		struct Hash_Node *node = get_hash_node_on_list(select_list, key); 
+		return (!is_empty(node)) ? node->value : NULL;
 	}
 
 	return NULL;
 }
+
+struct Hash_Node *get_hash_node_on_list(head, key) 
+	struct Hash_Node *head;
+	const char* key;
+{
+	if(strcmp(head->key, key) != 0 && is_empty(head->next)) return NULL;
+
+	if(strcmp(head->key, key) == 0) return head;  
+
+	head = head->next;
+	while(!is_empty(head)) {
+		if(strcmp(head->key, key) != 0) 
+			head = head->next;
+		else
+			return head;
+	}
+
+	return NULL;
+}
+
 
 void insert_hash_node_in_next_available_spot(head, node)
 	struct Hash_Node *head;
@@ -91,14 +104,14 @@ void insert_hash_node_in_next_available_spot(head, node)
 void free_all_nodes_in_bucket(head)
 	struct Hash_Node *head;
 {
-	if(head == NULL) return;
+	if(is_empty(head)) return;
 
-	if(head->next == NULL){ 
+	if(is_empty(head->next)){ 
 		free(head);
 		head = NULL;
 		return;
 	}
-	
+
 	while(!is_empty(head)) {
 	 	struct Hash_Node *next = head->next;
 	 	free(head);
@@ -107,10 +120,56 @@ void free_all_nodes_in_bucket(head)
 	free(head);
 }
 
+// XXX: Not tested for collision
+
 void hash_delete(table, key) 
 	Hash_Table *table;
-	char* key;
-{}
+	const char* key;
+{
+	if(is_empty(table)) 
+		return;
+
+	const unsigned int index = hash_code(table->capacity, key);
+
+
+	if(delete_hash_node_on_list(table->bucket[index], key)){
+		table->size--;
+		table->bucket[index] = NULL;
+	}
+
+
+}
+
+
+boolean delete_hash_node_on_list(head, key) 
+	struct Hash_Node *head;
+	const char* key;
+{
+	if( is_empty(head) ||
+		(is_empty(head->next) && strcmp(head->key, key) != 0)
+	) return false;
+	
+	if(strcmp(head->key, key) == 0) {
+		free(head);
+		return true;
+	} 
+
+	head = head->next;
+	// Stores the address of the previous NODE
+	struct Hash_Node *prev = NULL;
+
+	while(!is_empty(head)) {
+		prev = head;
+		if(strcmp(head->key, key) != 0) {
+			head = head->next;
+		} else {
+			prev->next = head->next;
+			free(head);
+			return true;
+		}
+	}
+	return false;
+}
 
 
 const unsigned int hash_code(size, str) 
@@ -136,7 +195,7 @@ void rehash(table)
 	Hash_Table *table;
 {}
 
-// Move this to utilities file
+// Move this to utilities file and make it a MACRO
 boolean is_empty(thing) 
 	void *thing;
 {
@@ -150,11 +209,11 @@ void hash_free(table)
 	 	free(table);
 	 	return;
 	}
-
 	if(table->bucket) {
 		for(int i = 0; i < table->capacity; i++) {
-			if(table->bucket[i])
+			if(!is_empty(table->bucket[i])) {
 		 		free_all_nodes_in_bucket(table->bucket[i]);
+			}
 	 	}
 		free(table->bucket);
 	}

@@ -3,7 +3,7 @@
 
     #ifdef DEBUG
         #define PNT_DEBUG(label, condition, expectedBool) (printf("%s: %s\n", label, (condition == expectedBool)?"TRUE":"FALSE"))
-        #define PNT_BOOL(label, bool) (printf("%s: %s\n", label, (bool)?"TRUE":"FALSE"))
+        #define PNT_BOOL(label, bool) (printf("%s: %s\n", label, (bool)?"YEAH":"NOPE"))
         #define PNT_SIZE(label, size) (printf("%s size --> %d\n"))
         #define TAG(what) (printf("TAGGED: %s\n", what))
     #else
